@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useMemo } from 'react'
+// ... other imports
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Line, LineChart, Pie, PieChart, ResponsiveContainer, XAxis, YAxis, Legend, Cell, Tooltip } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
@@ -57,7 +58,7 @@ function generateBalanceSheetData(period: Period) {
   };
 }
 
-export function BalanceSheet({ plan }: BalanceSheetProps) {
+export function BalanceSheet({ plan }: BalanceSheetProps) { { // eslint-disable-line @typescript-eslint/no-unused-vars 
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
   const data = useMemo(() => generateBalanceSheetData(selectedPeriod), [selectedPeriod])
 
@@ -248,4 +249,4 @@ export function BalanceSheet({ plan }: BalanceSheetProps) {
     </div>
   )
 }
-
+}

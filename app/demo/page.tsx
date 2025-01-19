@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { BarChart2, DollarSign, FileText, PieChart, Wallet, Calculator } from 'lucide-react'
+import { BarChart2, DollarSign, FileText, Wallet, Calculator } from 'lucide-react'
 import { OverallHealth } from '@/components/dashboard/overall-health'
 import { SalesAnalysis } from '@/components/dashboard/sales-analysis'
 import { ExpenseAnalysis } from '@/components/dashboard/expense-analysis'

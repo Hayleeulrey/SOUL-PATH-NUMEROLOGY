@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from "recharts"
+import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Legend} from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createDeterministicRandom } from '@/lib/generate-mock-data'
@@ -62,7 +62,7 @@ function generateBudgetData(period: Period) {
   };
 }
 
-export function BudgetAnalysis({ plan }: BudgetAnalysisProps) {
+export function BudgetAnalysis({ plan }: BudgetAnalysisProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
   const data = useMemo(() => generateBudgetData(selectedPeriod), [selectedPeriod])
 

@@ -5,6 +5,7 @@ import { Bar, BarChart, Line, LineChart, Pie, PieChart, ResponsiveContainer, XAx
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useState, useMemo, useEffect, useId } from "react"
+import { createDeterministicRandom } from '@/lib/generate-mock-data'
 
 type CashManagementProps = {
   plan: 'basic' | 'pro' | 'nonprofit'
@@ -14,8 +15,7 @@ type Period = 'YTD' | 'MTD' | 'QTD'
 
 // Helper function to generate random data
 const generateDeterministicData = (period: Period) => {
-  const seedrandom = require('seedrandom');
-  const rng = seedrandom(period); // Use the period as a seed
+  const rng = createDeterministicRandom(period); // Use the period as a seed
 
   const randomInt = (min: number, max: number) => Math.floor(rng() * (max - min + 1) + min);
   const randomFloat = (min: number, max: number) => parseFloat((rng() * (max - min) + min).toFixed(2));
@@ -56,7 +56,7 @@ const generateDeterministicData = (period: Period) => {
   }
 }
 
-export function CashManagement({ plan }: CashManagementProps) {
+export function CashManagement({ plan }: CashManagementProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const uniqueId = useId();
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
   const [data, setData] = useState(() => generateDeterministicData('YTD'));

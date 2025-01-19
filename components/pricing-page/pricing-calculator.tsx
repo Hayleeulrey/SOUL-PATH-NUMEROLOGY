@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
-import { AddOn, addOns } from './add-ons-table'
+import type { AddOn } from './add-ons-table'
+import { addOns } from './add-ons-table'
 
 interface PlanDetails {
   name: string;
@@ -78,8 +79,9 @@ export default function PricingCalculator() {
     
     // Calculate add-on costs
     const selectedAddOns = addOns.filter(addon => addOnIds.includes(addon.id))
-    const addOnOneTimeFees = selectedAddOns.reduce((sum, addon) => sum + (addon.oneTimeFee || 0), 0)
-    const addOnMonthlyFees = selectedAddOns.reduce((sum, addon) => sum + (addon.monthlyFee || 0), 0)
+    const addOnOneTimeFees = selectedAddOns.reduce((sum: number, addon: AddOn) => sum + (addon.oneTimeFee || 0), 0)
+    const addOnMonthlyFees = selectedAddOns.reduce((sum: number, addon: AddOn) => sum + (addon.monthlyFee || 0), 0)
+
     const addOnAnnualFees = addOnMonthlyFees * 12
     
     if (paymentType === 'split') {

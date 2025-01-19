@@ -13,7 +13,7 @@ type OverallHealthProps = {
 
 type Period = 'YTD' | 'QTD' | 'MTD'
 
-export function OverallHealth({ plan }: OverallHealthProps) {
+export function OverallHealth({ plan }: OverallHealthProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
 
   const data = useMemo(() => generateMockData(selectedPeriod), [selectedPeriod])

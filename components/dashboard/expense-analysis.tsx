@@ -61,7 +61,7 @@ function generateExpenseData(period: Period) {
   };
 }
 
-export function ExpenseAnalysis({ plan }: ExpenseAnalysisProps) {
+export function ExpenseAnalysis({ plan }: ExpenseAnalysisProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
   const data = useMemo(() => generateExpenseData(selectedPeriod), [selectedPeriod])
 

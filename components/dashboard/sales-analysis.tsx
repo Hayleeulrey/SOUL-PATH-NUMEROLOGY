@@ -53,7 +53,7 @@ function generateSalesData(period: Period) {
   };
 }
 
-export function SalesAnalysis({ plan }: SalesAnalysisProps) {
+export function SalesAnalysis({ plan }: SalesAnalysisProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
   const [selectedPeriod, setSelectedPeriod] = useState<Period>('YTD')
   const data = useMemo(() => generateSalesData(selectedPeriod), [selectedPeriod])
 

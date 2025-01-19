@@ -13,7 +13,7 @@ export default function AboutPage() {
           Founded in 2020, our team of expert consultants and developers has been dedicated to transforming the way companies interact with their financial data. We believe that every business, regardless of size or industry, should have access to powerful, intuitive tools that provide clear insights into their financial health and performance.
         </p>
         <p>
-          Our custom financial dashboards are more than just pretty charts and graphs. They're comprehensive, real-time windows into your business's financial ecosystem, designed to simplify complex data and highlight the metrics that matter most to your success.
+          Our custom financial dashboards are more than just pretty charts and graphs. They&apos;re comprehensive, real-time windows into your business&apos;s financial ecosystem, designed to simplify complex data and highlight the metrics that matter most to your success.
         </p>
         <h3 className="text-2xl font-bold mt-8 mb-4 text-teal-400">Our Mission</h3>
         <p>
@@ -25,7 +25,7 @@ export default function AboutPage() {
           <li>Expert Support: Our team is always ready to help you make the most of your dashboard.</li>
           <li>Cutting-edge Technology: We leverage the latest in data visualization and analytics.</li>
           <li>Scalability: Our solutions grow with your business, from startup to enterprise.</li>
-          <li>Data Security: Your financial data's security is our top priority.</li>
+          <li>Data Security: Your financial data&apos;s security is our top priority.</li>
         </ul>
       </div>
     </>

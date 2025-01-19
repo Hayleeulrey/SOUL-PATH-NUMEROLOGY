@@ -1,6 +1,6 @@
 "use client"
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { TooltipProps } from "recharts"
 
 interface ChartProps {
@@ -38,34 +38,36 @@ export function ChartContainer({ children, config, className }: ChartProps) {
   )
 }
 
-// Updated ChartTooltip to be a proper Recharts tooltip component
-export const ChartTooltip = function ChartTooltip(
-  props: Partial<TooltipProps<any, any>>
-) {
-  if (!props.active || !props.payload?.length) {
-    return null
-  }
-  
-  return <ChartTooltipContent {...props} />
-}
+type ChartValue = string | number
 
-// Updated to use a more generic type that matches Recharts payload structure
-interface TooltipPayload {
-  value?: any
-  name?: string
+interface TooltipPayloadItem {
+  name: string
+  value: ChartValue
   payload?: {
     label?: string
-    [key: string]: any
+    [key: string]: ChartValue | string | undefined
   }
+}
+
+interface ChartTooltipProps extends Omit<TooltipProps<ChartValue, string>, 'payload'> {
+  payload?: TooltipPayloadItem[]
 }
 
 interface ChartTooltipContentProps {
   className?: string
   style?: CustomCSSProperties
-  payload?: TooltipPayload[]
+  payload?: TooltipPayloadItem[]
   active?: boolean
   label?: string
   hideLabel?: boolean
+}
+
+export const ChartTooltip = function ChartTooltip(props: ChartTooltipProps) {
+  if (!props.active || !props.payload?.length) {
+    return null
+  }
+  
+  return <ChartTooltipContent {...props} />
 }
 
 export function ChartTooltipContent({
@@ -90,11 +92,11 @@ export function ChartTooltipContent({
         )}
         <div className="flex flex-col gap-0.5">
           {payload.map((item, index) => {
-            const name = item.name || ''
+            const name = item.name
             const value = item.value
-            const key = keys[index] ?? name.toLowerCase()
+            const key = keys[index] ?? String(name).toLowerCase()
             return (
-              <div key={name} className="flex items-center justify-between gap-2">
+              <div key={String(name)} className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1">
                   <div
                     className="size-2 rounded-full"

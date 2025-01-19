@@ -1,3 +1,4 @@
+import Link from "next/link"
 import PricingTable from "@/components/pricing-page/pricing-table"
 import { AddOnsTable } from "@/components/pricing-page/add-ons-table"
 import { FloatingCalculatorButton } from "@/components/pricing-page/floating-calculator-button"
@@ -12,24 +13,24 @@ export default function PricingPage() {
             <nav className="flex items-center">
               <ul className="flex space-x-6 mr-6">
                 <li>
-                  <a href="/" className="text-gray-300 hover:text-teal-400 transition-colors">
+                  <Link href="/" className="text-gray-300 hover:text-teal-400 transition-colors">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-teal-400 border-b-2 border-teal-400 pb-1">
+                  <Link href="/pricing" className="text-teal-400 border-b-2 border-teal-400 pb-1">
                     Pricing
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/about" className="text-gray-300 hover:text-teal-400 transition-colors">
+                  <Link href="/about" className="text-gray-300 hover:text-teal-400 transition-colors">
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/contact" className="text-gray-300 hover:text-teal-400 transition-colors">
+                  <Link href="/contact" className="text-gray-300 hover:text-teal-400 transition-colors">
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 transform hover:scale-105">
@@ -57,19 +58,19 @@ export default function PricingPage() {
             <div>
               <ul className="flex space-x-4">
                 <li>
-                  <a href="#" className="hover:text-teal-400 transition-colors">
+                  <Link href="/privacy-policy" className="hover:text-teal-400 transition-colors">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-teal-400 transition-colors">
+                  <Link href="/terms-of-service" className="hover:text-teal-400 transition-colors">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/contact" className="hover:text-teal-400 transition-colors">
+                  <Link href="/contact" className="hover:text-teal-400 transition-colors">
                     Contact Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

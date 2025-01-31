@@ -22,10 +22,10 @@ export default function Home() {
         {/* Hero Section */}
         <section className="py-20 text-center">
           <h1 className="text-5xl font-bold mb-6 text-teal-400">
-            Empower Your Business with Custom Financial Dashboards
+          Financial and operations dashboards for the discerning professionals
           </h1>
           <p className="text-xl mb-12 max-w-3xl mx-auto">
-            Automation Consulting LLC provides tailored financial solutions to drive your business forward. Make data-driven decisions with ease and efficiency.
+            DashPro provides tailored financial and operational solutions to drive your business forward. Make data-driven decisions with ease and efficiency.
           </p>
           <div className="flex justify-center space-x-4">
             <Button 

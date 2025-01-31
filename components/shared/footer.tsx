@@ -6,8 +6,8 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <h2 className="text-2xl font-bold text-teal-400">Automation Consulting LLC</h2>
-            <p>Empowering businesses through custom financial dashboards</p>
+            <h2 className="text-2xl font-bold text-teal-400">DashPro</h2>
+            <p>Empowering businesses through custom financial and operational dashboards</p>
           </div>
           <div>
             <ul className="flex space-x-4">
@@ -18,7 +18,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center">
-          <p>&copy; 2025 Automation Consulting LLC. All rights reserved.</p>
+          <p>&copy; 2025 DashPro All rights reserved.</p>
         </div>
       </div>
     </footer>

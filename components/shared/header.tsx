@@ -17,8 +17,9 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 bg-gray-800 shadow-md z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-teal-400">
-            Automation Consulting LLC
+          <Link href="/" className="flex flex-col items-start">
+            <span className="text-xl font-bold text-teal-400">DashPro</span>
+            <span className="text-xs text-white">Driving Decisions with Precision</span>
           </Link>
           <nav className="flex items-center">
             <ul className="flex space-x-6 mr-6">
@@ -69,4 +70,3 @@ export function Header() {
     </header>
   )
 }
-

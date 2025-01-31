@@ -15,10 +15,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-20 text-center">
         <h1 className="text-5xl font-bold mb-6 text-teal-400">
-          Empower Your Business with Custom Financial Dashboards
+        Financial and operational dashboards for the discerning professionals
         </h1>
         <p className="text-xl mb-12 max-w-3xl mx-auto text-gray-300">
-          Automation Consulting LLC provides tailored financial solutions to drive your business forward. Make data-driven decisions with ease and efficiency.
+        DashPro provides tailored financial and operational solutions to drive your business forward. Make data-informed decisions with ease and efficiency.
         </p>
         <div className="flex justify-center space-x-4">
           <Button 
@@ -64,7 +64,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="py-20 text-center">
-        <h2 className="text-3xl font-bold mb-6 text-teal-400">Ready to Transform Your Financial Insights?</h2>
+        <h2 className="text-3xl font-bold mb-6 text-teal-400">Ready to Transform Your Financial & Operational Insights?</h2>
         <p className="text-xl mb-8 text-gray-300">
           Join the growing number of businesses leveraging our custom financial dashboards.
         </p>

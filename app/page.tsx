@@ -23,8 +23,8 @@ export default function Page() {
           Discover the divine patterns in your life through our faith-based numerology calculator. This powerful tool
           combines ancient wisdom with biblical insights, revealing the sacred numbers that shape your spiritual
           journey. Like the intricate symbolism in Tarot and the celestial guidance of astrology, numerology offers a
-          unique perspective on your life's purpose. Our calculator provides personalized insights, drawing parallels
-          between your numerological profile and scriptural references, helping you align with God's plan for your life.
+          unique perspective on your life&apos;s purpose. Our calculator provides personalized insights, drawing parallels
+          between your numerological profile and scriptural references, helping you align with God&apos;s plan for your life.
         </p>
         <NumerologyCalculator />
       </main>

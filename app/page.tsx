@@ -27,6 +27,7 @@ export default function Page() {
           parallels between your numerological profile and scriptural references, helping you align with God&apos;s plan
           for your life.
         </p>
+
         <NumerologyCalculator />
       </main>
       <Footer />

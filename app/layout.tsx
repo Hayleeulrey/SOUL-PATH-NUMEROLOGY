@@ -1,13 +1,13 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { Header } from '@/components/shared/header'
-import { Footer } from '@/components/shared/footer'
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import type React from "react" // Import React
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
-export const metadata = {
-  title: 'Automation Consulting LLC',
-  description: 'Custom financial dashboards for your business',
+export const metadata: Metadata = {
+  title: "Numerology Insights",
+  description: "Discover your personal numerology numbers and their meanings",
 }
 
 export default function RootLayout({
@@ -16,14 +16,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} min-h-screen bg-gray-900`}>
-        <Header />
-        <main className="container mx-auto py-20 px-4 mt-16">
-          {children}
-        </main>
-        <Footer />
-      </body>
+    <html lang="en" className="bg-[#F4F4F4]">
+      <body className={`${inter.className} bg-[#F4F4F4]`}>{children}</body>
     </html>
   )
 }

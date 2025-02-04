@@ -1,5 +1,5 @@
 {
-  "name": "dashpro-webpage",
+  "name": "south-path-numerology",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,6 +19,7 @@
     "@types/recharts": "^1.8.29",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "daisyui": "^4.12.23",
     "lucide-react": "^0.473.0",
     "next": "15.1.5",
     "react": "^19.0.0",

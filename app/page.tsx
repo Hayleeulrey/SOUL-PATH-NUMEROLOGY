@@ -10,13 +10,12 @@ export default function Page() {
       <main className="flex-grow container mx-auto px-4 pt-32 pb-8">
         <div className="flex justify-center mb-12">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-idtKkvE7A9uVW1vnmYlpk7csKZgCry.png"
+            src="/lavender.png"
             alt="Lavender botanical illustration"
             width={200}
             height={200}
             className="opacity-80"
             priority
-            unoptimized
           />
         </div>
         <p className="text-xl leading-relaxed text-[#4F5D4E] mb-8 max-w-3xl mx-auto text-center font-serif italic">

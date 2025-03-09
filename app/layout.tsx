@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import type React from "react" // Import React
+import { Header } from "@/components/shared/header"
+import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Numerology Insights",
+  title: "Soul Path Numerology",
   description: "Discover your personal numerology numbers and their meanings",
 }
 
@@ -16,8 +17,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="bg-[#F4F4F4]">
-      <body className={`${inter.className} bg-[#F4F4F4]`}>{children}</body>
+    <html lang="en">
+      <body className={inter.className}>
+        <Header />
+        <main className="min-h-screen pb-16">{children}</main>
+      </body>
     </html>
   )
 }

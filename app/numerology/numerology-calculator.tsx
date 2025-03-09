@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -27,7 +29,7 @@ export function NumerologyCalculator() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (firstName && middleName && lastName && birthdate) {
+    if (firstName && lastName && birthdate) {
       const results = calculateNumerology(firstName, middleName, lastName, birthdate)
       setResult(results)
     }
@@ -180,7 +182,7 @@ export function NumerologyCalculator() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="middleName" className="text-[#333333]">
-                Middle Name
+                Middle Name 
               </Label>
               <Input
                 id="middleName"
@@ -188,7 +190,6 @@ export function NumerologyCalculator() {
                 placeholder="Enter your middle name"
                 value={middleName}
                 onChange={(e) => setMiddleName(e.target.value)}
-                required
                 className="border-[#4F5D4E] focus:ring-[#4F5D4E] bg-white"
               />
             </div>

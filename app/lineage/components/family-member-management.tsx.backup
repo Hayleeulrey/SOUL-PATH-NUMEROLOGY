@@ -1,0 +1,592 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Plus, Users, Edit, Trash2, Calendar, MapPin } from "lucide-react"
+import { FamilyMemberWithRelations } from "@/lib/lineage-types"
+import { RelationshipManagement } from "./relationship-management"
+
+export function FamilyMemberManagement() {
+  const [familyMembers, setFamilyMembers] = useState<FamilyMemberWithRelations[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editingMember, setEditingMember] = useState<FamilyMemberWithRelations | null>(null)
+  const [viewingRelationships, setViewingRelationships] = useState<string | null>(null)
+
+  // Form state
+  const [formData, setFormData] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    maidenName: "",
+    birthDate: "",
+    deathDate: "",
+    birthCity: "",
+    birthState: "",
+    birthCountry: "",
+    deathCity: "",
+    deathState: "",
+    deathCountry: "",
+    bio: "",
+    notes: "",
+    isAlive: true,
+  })
+
+  useEffect(() => {
+    setMounted(true)
+    fetchFamilyMembers()
+  }, [])
+
+  const fetchFamilyMembers = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch("/api/family-members")
+      const result = await response.json()
+      
+      if (result.success) {
+        setFamilyMembers(result.data)
+      } else {
+        setError(result.error || "Failed to fetch family members")
+      }
+    } catch (err) {
+      setError("Failed to fetch family members")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    try {
+      const url = editingMember 
+        ? `/api/family-members/${editingMember.id}`
+        : "/api/family-members"
+      
+      const method = editingMember ? "PUT" : "POST"
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        await fetchFamilyMembers()
+        resetForm()
+        setIsDialogOpen(false)
+        setEditingMember(null)
+      } else {
+        setError(result.error || "Failed to save family member")
+      }
+    } catch (err) {
+      setError("Failed to save family member")
+    }
+  }
+
+  const handleEdit = (member: FamilyMemberWithRelations) => {
+    setEditingMember(member)
+    setFormData({
+      firstName: member.firstName,
+      middleName: member.middleName || "",
+      lastName: member.lastName,
+      maidenName: (member as any).maidenName || "",
+      birthDate: member.birthDate ? new Date(member.birthDate).toISOString().split('T')[0] : "",
+      deathDate: member.deathDate ? new Date(member.deathDate).toISOString().split('T')[0] : "",
+      birthCity: (member as any).birthCity || "",
+      birthState: (member as any).birthState || "",
+      birthCountry: (member as any).birthCountry || "",
+      deathCity: (member as any).deathCity || "",
+      deathState: (member as any).deathState || "",
+      deathCountry: (member as any).deathCountry || "",
+      bio: member.bio || "",
+      notes: member.notes || "",
+      isAlive: member.isAlive,
+    })
+    setIsDialogOpen(true)
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this family member?")) return
+    
+    try {
+      const response = await fetch(`/api/family-members/${id}`, {
+        method: "DELETE",
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        await fetchFamilyMembers()
+      } else {
+        setError(result.error || "Failed to delete family member")
+      }
+    } catch (err) {
+      setError("Failed to delete family member")
+    }
+  }
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      maidenName: "",
+      birthDate: "",
+      deathDate: "",
+      birthCity: "",
+      birthState: "",
+      birthCountry: "",
+      deathCity: "",
+      deathState: "",
+      deathCountry: "",
+      bio: "",
+      notes: "",
+      isAlive: true,
+    })
+    setEditingMember(null)
+  }
+
+  const handleAddNew = () => {
+    resetForm()
+    setIsDialogOpen(true)
+  }
+
+  const handleViewRelationships = (memberId: string) => {
+    setViewingRelationships(memberId)
+  }
+
+  const handleCloseRelationships = () => {
+    setViewingRelationships(null)
+  }
+
+  const formatDate = (date: Date | null) => {
+    if (!date) return "Unknown"
+    return new Date(date).toLocaleDateString()
+  }
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-12">
+      {/* Header */}
+      <div className="text-center">
+        <h2 className="text-3xl font-light text-gray-900 mb-3">Family Members</h2>
+        <p className="text-gray-500">Manage your family tree and add new members</p>
+      </div>
+
+      {/* Add Member Button */}
+      <div className="flex justify-center">
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={handleAddNew} className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 rounded-xl font-medium shadow-sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Family Member
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white border-gray-200">
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 text-2xl">
+                {editingMember ? "Edit Family Member" : "Add New Family Member"}
+              </DialogTitle>
+              <DialogDescription className="text-gray-600">
+                {editingMember 
+                  ? "Update the family member's information below."
+                  : "Enter the family member's information below."
+                }
+              </DialogDescription>
+            </DialogHeader>
+          {error && (
+            <Alert className="mb-4 bg-red-50 border-red-200">
+              <AlertDescription className="text-red-800">{error}</AlertDescription>
+            </Alert>
+          )}
+
+          <div className="flex justify-between items-center mb-6">
+            <p className="text-sm text-gray-600">
+              {familyMembers.length} family member{familyMembers.length !== 1 ? 's' : ''}
+            </p>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={handleAddNew} className="bg-[#E07A5F] hover:bg-[#E07A5F]/90">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Family Member
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingMember ? "Edit Family Member" : "Add New Family Member"}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {editingMember 
+                      ? "Update the family member's information below."
+                      : "Enter the family member's information below."
+                    }
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="text-gray-700 font-medium">First Name *</Label>
+                      <Input
+                        id="firstName"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                        required
+                        className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="middleName" className="text-gray-700 font-medium">Middle Name</Label>
+                      <Input
+                        id="middleName"
+                        value={formData.middleName}
+                        onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
+                        className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName" className="text-gray-700 font-medium">Last Name *</Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      required
+                      className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="maidenName" className="text-gray-700 font-medium">Maiden Name (Optional)</Label>
+                    <Input
+                      id="maidenName"
+                      value={formData.maidenName}
+                      onChange={(e) => setFormData({ ...formData, maidenName: e.target.value })}
+                      placeholder="Enter maiden name if applicable"
+                      className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="birthDate" className="text-gray-700 font-medium">Birth Date</Label>
+                    <Input
+                      id="birthDate"
+                      type="date"
+                      value={formData.birthDate}
+                      onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                      className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                    />
+                  </div>
+
+                  {/* Place of Birth Section */}
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-gray-300 pl-4">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Place of Birth</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="birthCity" className="text-gray-700 font-medium">City</Label>
+                          <Input
+                            id="birthCity"
+                            value={formData.birthCity}
+                            onChange={(e) => setFormData({ ...formData, birthCity: e.target.value })}
+                            placeholder="City"
+                            className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="birthState" className="text-gray-700 font-medium">State/Province</Label>
+                          <Input
+                            id="birthState"
+                            value={formData.birthState}
+                            onChange={(e) => setFormData({ ...formData, birthState: e.target.value })}
+                            placeholder="State/Province"
+                            className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="birthCountry" className="text-gray-700 font-medium">Country</Label>
+                          <Input
+                            id="birthCountry"
+                            value={formData.birthCountry}
+                            onChange={(e) => setFormData({ ...formData, birthCountry: e.target.value })}
+                            placeholder="Country"
+                            className="border-gray-300 focus:border-gray-900 focus:ring-gray-900"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="isAlive"
+                      checked={formData.isAlive}
+                      onChange={(e) => setFormData({ ...formData, isAlive: e.target.checked })}
+                      className="rounded"
+                    />
+                    <Label htmlFor="isAlive">Still living</Label>
+                  </div>
+
+                  {!formData.isAlive && (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="deathDate">Death Date</Label>
+                        <Input
+                          id="deathDate"
+                          type="date"
+                          value={formData.deathDate}
+                          onChange={(e) => setFormData({ ...formData, deathDate: e.target.value })}
+                        />
+                      </div>
+
+                      {/* Place of Death Section */}
+                      <div className="space-y-4">
+                        <div className="border-l-4 border-[#E07A5F] pl-4">
+                          <h3 className="text-lg font-semibold text-[#333333] mb-3">Place of Death</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="deathCity">City</Label>
+                              <Input
+                                id="deathCity"
+                                value={formData.deathCity}
+                                onChange={(e) => setFormData({ ...formData, deathCity: e.target.value })}
+                                placeholder="City"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="deathState">State/Province</Label>
+                              <Input
+                                id="deathState"
+                                value={formData.deathState}
+                                onChange={(e) => setFormData({ ...formData, deathState: e.target.value })}
+                                placeholder="State/Province"
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="deathCountry">Country</Label>
+                              <Input
+                                id="deathCountry"
+                                value={formData.deathCountry}
+                                onChange={(e) => setFormData({ ...formData, deathCountry: e.target.value })}
+                                placeholder="Country"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio" className="text-gray-700 font-medium">Biography</Label>
+                    <textarea
+                      id="bio"
+                      className="w-full p-3 border border-gray-300 rounded-md resize-none focus:border-gray-900 focus:ring-gray-900 focus:outline-none"
+                      rows={3}
+                      value={formData.bio}
+                      onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                      placeholder="Brief biography or description..."
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="notes" className="text-gray-700 font-medium">Notes</Label>
+                    <textarea
+                      id="notes"
+                      className="w-full p-3 border border-gray-300 rounded-md resize-none focus:border-gray-900 focus:ring-gray-900 focus:outline-none"
+                      rows={2}
+                      value={formData.notes}
+                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                      placeholder="Additional notes or memories..."
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-3 pt-6">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsDialogOpen(false)}
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                      {editingMember ? "Update" : "Add"} Family Member
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Loading family members...</p>
+            </div>
+          ) : familyMembers.length === 0 ? (
+            <div className="text-center py-16">
+              <Users className="h-20 w-20 text-gray-300 mx-auto mb-6" />
+              <p className="text-gray-500 mb-6 text-lg">No family members added yet</p>
+              <Button onClick={handleAddNew} className="bg-gray-900 text-white hover:bg-gray-800 px-8 py-3 rounded-xl font-medium shadow-sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Your First Family Member
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {familyMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-gray-300 transition-all duration-200 group"
+                >
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 font-semibold text-xl">
+                        {member.firstName.charAt(0)}{member.lastName.charAt(0)}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+                          {member.firstName} {member.middleName} {member.lastName}
+                        </h3>
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className={`w-2 h-2 rounded-full ${member.isAlive ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                          <span className="text-gray-500">{member.isAlive ? 'Living' : 'Deceased'}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 mb-4 flex-1">
+                      <div className="space-y-2 text-sm text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-gray-400" />
+                          <span className="font-medium">Born:</span>
+                          <span>{formatDate(member.birthDate)}</span>
+                        </div>
+                        {!member.isAlive && (
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-gray-400" />
+                            <span className="font-medium">Died:</span>
+                            <span>{formatDate(member.deathDate)}</span>
+                          </div>
+                        )}
+                        {((member as any).birthCity || (member as any).birthState || (member as any).birthCountry) && (
+                          <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-gray-400" />
+                            <span className="font-medium">Born in:</span>
+                            <span>
+                              {[
+                                (member as any).birthCity,
+                                (member as any).birthState,
+                                (member as any).birthCountry
+                              ].filter(Boolean).join(", ")}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {member.bio && (
+                        <p className="text-sm text-gray-600 line-clamp-3 leading-relaxed">{member.bio}</p>
+                      )}
+                      
+                      <div className="flex flex-wrap gap-2 mt-4">
+                        <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">
+                          {member.stories.length} stories
+                        </span>
+                        <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">
+                          {member.photos.length} photos
+                        </span>
+                        {member.numerologyProfile && (
+                          <span className="text-xs bg-gray-900 text-white px-3 py-1 rounded-full font-medium">
+                            Numerology Profile
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2 mt-auto pt-4">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEdit(member)}
+                        className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                      >
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleViewRelationships(member.id)}
+                        className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+                      >
+                        <Users className="h-4 w-4 mr-1" />
+                        Relations
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDelete(member.id)}
+                        className="border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400 px-3"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Relationship Management Dialog */}
+        <Dialog open={!!viewingRelationships} onOpenChange={() => setViewingRelationships(null)}>
+          <DialogContent className="sm:max-w-[600px] bg-white border-gray-200 p-6 rounded-lg shadow-xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl text-gray-900">
+                Manage Relationships
+              </DialogTitle>
+              <DialogDescription className="text-gray-600">
+                {viewingRelationships && familyMembers.find(m => m.id === viewingRelationships) && 
+                  `Add and manage relationships for ${familyMembers.find(m => m.id === viewingRelationships)?.firstName} ${familyMembers.find(m => m.id === viewingRelationships)?.lastName}`
+                }
+              </DialogDescription>
+            </DialogHeader>
+          
+          {viewingRelationships && (
+            <RelationshipManagement
+              familyMemberId={viewingRelationships}
+              familyMemberName={`${familyMembers.find(m => m.id === viewingRelationships)?.firstName} ${familyMembers.find(m => m.id === viewingRelationships)?.lastName}`}
+              onRelationshipAdded={() => {
+                fetchFamilyMembers()
+                setViewingRelationships(null)
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
+}

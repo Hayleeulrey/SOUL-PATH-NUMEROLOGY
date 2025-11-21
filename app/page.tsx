@@ -1,12 +1,10 @@
 import Image from "next/image"
-import { Header } from "@/components/shared/header"
 import { Footer } from "@/components/shared/footer"
 import { NumerologyCalculator } from "./numerology/numerology-calculator"
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-[#F4F4F4] flex flex-col">
-      <Header />
       <main className="flex-grow container mx-auto px-4 pt-32 pb-8">
         <div className="flex justify-center mb-12">
           <Image

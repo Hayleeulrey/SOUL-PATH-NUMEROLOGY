@@ -1,0 +1,470 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model FamilyMember {
+  id                     String              @id @default(cuid())
+  userId                 String?
+  firstName              String
+  middleName             String?
+  lastName               String
+  maidenName             String?
+  suffix                 String?
+  birthDate              DateTime?
+  deathDate              DateTime?
+  birthCity              String?
+  birthState             String?
+  birthCountry           String?
+  deathCity              String?
+  deathState             String?
+  deathCountry           String?
+  bio                    String?
+  notes                  String?
+  isAlive                Boolean             @default(true)
+  isClaimed              Boolean             @default(false)
+  claimedAt               DateTime?
+  createdBy              String?
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  aiConversations        AIConversation[]
+  audioFiles             AudioFile[]
+  biographyResponses     BiographyResponse[]
+  documents              Document[]
+  invitationsSent        FamilyInvitation[]
+  user                   User?               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  numerologyProfile      NumerologyProfile?
+  photos                 Photo[]
+  relationshipsAsRelated Relationship[]      @relation("RelatedRelationships")
+  relationshipsAsPerson  Relationship[]      @relation("PersonRelationships")
+  stories                Story[]
+  userProfile            UserProfile?
+  contentApprovals       ContentApproval[]
+  contentTags            ContentTag[]         @relation("ContentTags")
+  profileAdmins          ProfileAdmin[]      @relation("ProfileAdmins")
+
+  @@map("family_members")
+}
+
+model Relationship {
+  id               String           @id @default(cuid())
+  personId         String
+  relatedId        String
+  relationshipType RelationshipType
+  notes            String?
+  startDate        DateTime?
+  endDate          DateTime?
+  isActive         Boolean          @default(true)
+  createdBy        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  related          FamilyMember     @relation("RelatedRelationships", fields: [relatedId], references: [id], onDelete: Cascade)
+  person           FamilyMember     @relation("PersonRelationships", fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([personId, relatedId, relationshipType])
+  @@map("relationships")
+}
+
+model Photo {
+  id                 String              @id @default(cuid())
+  familyMemberId     String
+  filename           String
+  originalName       String
+  filePath           String
+  fileSize           Int
+  mimeType           String
+  width              Int?
+  height             Int?
+  caption            String?
+  tags               String?
+  isProfile          Boolean             @default(false)
+  createdBy          String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  biographyResponses BiographyResponse[]
+  familyMember       FamilyMember        @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("photos")
+}
+
+model AudioFile {
+  id                 String              @id @default(cuid())
+  familyMemberId     String
+  filename           String
+  originalName       String
+  filePath           String
+  fileSize           Int
+  duration           Float?
+  transcription      String?
+  summary            String?
+  tags               String?
+  createdBy          String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  familyMember       FamilyMember        @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+  biographyResponses BiographyResponse[]
+
+  @@map("audio_files")
+}
+
+model Document {
+  id                 String              @id @default(cuid())
+  familyMemberId     String
+  filename           String
+  originalName       String
+  filePath           String
+  fileSize           Int
+  mimeType           String
+  title              String?
+  description        String?
+  content            String?
+  tags               String?
+  createdBy          String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  biographyResponses BiographyResponse[]
+  familyMember       FamilyMember        @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+model Story {
+  id             String        @id @default(cuid())
+  familyMemberId String
+  title          String
+  content        String
+  category       StoryCategory @default(OTHER)
+  summary        String?
+  tags           String?
+  isPublic       Boolean       @default(true)
+  isAI           Boolean       @default(false)
+  sourceType     String?
+  sourceId       String?
+  createdBy      String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  familyMember   FamilyMember  @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("stories")
+}
+
+model BiographyPrompt {
+  id          String              @id @default(cuid())
+  category    PromptCategory
+  question    String
+  description String?
+  isActive    Boolean             @default(true)
+  order       Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  responses   BiographyResponse[]
+
+  @@map("biography_prompts")
+}
+
+model BiographyResponse {
+  id             String          @id @default(cuid())
+  familyMemberId String
+  promptId       String
+  answer         String?
+  audioFileId    String?
+  photoId        String?
+  documentId     String?
+  relatedTo      String?
+  isPublic       Boolean         @default(true)
+  tags           String?
+  createdBy      String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  document       Document?       @relation(fields: [documentId], references: [id])
+  photo          Photo?          @relation(fields: [photoId], references: [id])
+  audioFile      AudioFile?      @relation(fields: [audioFileId], references: [id])
+  prompt         BiographyPrompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  familyMember   FamilyMember    @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("biography_responses")
+}
+
+model NumerologyProfile {
+  id               String       @id @default(cuid())
+  familyMemberId   String       @unique
+  soulNumber       String
+  outerPersonality String
+  destinyNumber    String
+  lifeLesson       String
+  calculationDate  DateTime     @default(now())
+  notes            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  familyMember     FamilyMember @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("numerology_profiles")
+}
+
+model AIConversation {
+  id             String       @id @default(cuid())
+  familyMemberId String
+  name           String       @default("Sage")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  familyMember   FamilyMember @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+  messages       AIMessage[]
+
+  @@map("ai_conversations")
+}
+
+model AIMessage {
+  id             String         @id @default(cuid())
+  conversationId String
+  role           String
+  content        String
+  metadata       String?
+  createdAt      DateTime       @default(now())
+  conversation   AIConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("ai_messages")
+}
+
+model UserProfile {
+  id                 String        @id @default(cuid())
+  userId             String        @unique
+  familyMemberId     String?       @unique
+  onboardingComplete Boolean       @default(false)
+  onboardingStep     Int           @default(0)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  familyMember       FamilyMember? @relation(fields: [familyMemberId], references: [id])
+
+  @@map("user_profiles")
+}
+
+model FamilyInvitation {
+  id             String           @id @default(cuid())
+  inviterId      String
+  familyMemberId String
+  email          String?
+  phone          String?
+  token          String           @unique
+  status         InvitationStatus @default(PENDING)
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  familyMember   FamilyMember     @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@map("family_invitations")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  familyMembers FamilyMember[]
+
+  @@map("users")
+}
+
+model PrivacySetting {
+  id        String   @id @default(cuid())
+  scope     String
+  userId    String?
+  memberId  String?
+  mode      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, userId, memberId])
+  @@map("privacy_settings")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  targetType String
+  targetId   String?
+  egress     Boolean  @default(false)
+  meta       String?
+  createdAt  DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+model VectorEmbedding {
+  id         String   @id @default(cuid())
+  entityType String
+  entityId   String
+  namespace  String
+  content    String
+  embedding  String
+  createdAt  DateTime @default(now())
+
+  @@unique([entityType, entityId])
+  @@index([namespace])
+  @@map("vector_embeddings")
+}
+
+model ContentApproval {
+  id             String          @id @default(cuid())
+  contentType    String
+  contentId      String
+  familyMemberId String
+  createdBy      String
+  status         ApprovalStatus  @default(PENDING)
+  reviewedAt     DateTime?
+  reviewedBy     String?
+  notes          String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  familyMember   FamilyMember    @relation(fields: [familyMemberId], references: [id], onDelete: Cascade)
+
+  @@unique([contentType, contentId, familyMemberId])
+  @@index([familyMemberId, status])
+  @@map("content_approvals")
+}
+
+model ContentTag {
+  id             String       @id @default(cuid())
+  contentType    String
+  contentId      String
+  taggedMemberId String
+  taggedBy       String
+  status         TagStatus    @default(PENDING)
+  notifiedAt     DateTime?
+  reviewedAt     DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  taggedMember   FamilyMember @relation("ContentTags", fields: [taggedMemberId], references: [id], onDelete: Cascade)
+
+  @@unique([contentType, contentId, taggedMemberId])
+  @@index([taggedMemberId, status])
+  @@map("content_tags")
+}
+
+model ProfileAdmin {
+  id             String       @id @default(cuid())
+  profileId      String
+  adminUserId    String
+  assignedBy     String
+  canEditProfile Boolean      @default(true)
+  canManageAdmins Boolean     @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  profile        FamilyMember @relation("ProfileAdmins", fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, adminUserId])
+  @@index([adminUserId])
+  @@map("profile_admins")
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  type        NotificationType
+  title       String
+  message     String
+  relatedType String?
+  relatedId   String?
+  isRead      Boolean          @default(false)
+  readAt      DateTime?
+  createdAt   DateTime         @default(now())
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model UserPreference {
+  id                            String   @id @default(cuid())
+  userId                        String   @unique
+  allowTaggingWithoutPermission Boolean  @default(true)
+  emailNotifications            Boolean  @default(true)
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+enum RelationshipType {
+  PARENT
+  CHILD
+  SIBLING
+  SPOUSE
+  GRANDPARENT
+  GRANDCHILD
+  UNCLE_AUNT
+  NEPHEW_NIECE
+  COUSIN
+  STEP_PARENT
+  STEP_CHILD
+  HALF_SIBLING
+  ADOPTED_PARENT
+  ADOPTED_CHILD
+  IN_LAW
+  PARTNER
+  FRIEND
+  OTHER
+}
+
+enum StoryCategory {
+  CHILDHOOD
+  EDUCATION
+  CAREER
+  MARRIAGE
+  FAMILY
+  TRAVEL
+  MILITARY
+  RELIGION
+  HEALTH
+  HOBBIES
+  ACHIEVEMENTS
+  CHALLENGES
+  MEMORIES
+  WISDOM
+  OTHER
+}
+
+enum PromptCategory {
+  CHILDHOOD
+  FAMILY
+  EDUCATION
+  CAREER
+  RELATIONSHIPS
+  VALUES
+  MILESTONES
+  TRADITIONS
+  WISDOM
+  CUSTOM
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+enum TagStatus {
+  PENDING
+  APPROVED
+  DENIED
+}
+
+enum NotificationType {
+  TAG_PENDING
+  CONTENT_PENDING_APPROVAL
+  PROFILE_CLAIMED
+  ADMIN_ASSIGNED
+  INVITATION_SENT
+}

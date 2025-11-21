@@ -1,0 +1,118 @@
+PROJECT DEVELOPMENT RULES
+==========================
+
+RULE #1: PRESERVE EXISTING FORMATTING
+------------------------------------
+NEVER modify existing page layouts, CSS classes, or component structures unless explicitly requested by the user. When adding new features or making changes:
+
+- Keep all existing styling intact
+- Maintain current layout structures
+- Preserve existing component hierarchies
+- Don't change CSS classes or Tailwind classes
+- Don't modify existing component props or structure
+- Only add new elements/components without touching existing ones
+
+If formatting changes are needed, ask the user first and get explicit permission.
+
+RULE #2: MAINTAIN DESIGN CONSISTENCY
+-----------------------------------
+- Always use the established color scheme:
+  * Sage green: #4F5D4E
+  * Terracotta: #E07A5F
+  * Light gray: #F4F4F4
+  * Dark gray: #333333
+- Use existing UI components from /components/ui/
+- Follow the established typography patterns
+- Maintain consistent spacing and padding
+
+RULE #3: PRESERVE EXISTING FUNCTIONALITY
+----------------------------------------
+- Never break existing features when adding new ones
+- Test that existing functionality still works after changes
+- Maintain backward compatibility
+- Don't remove or modify existing API endpoints without permission
+
+RULE #4: FOLLOW ESTABLISHED PATTERNS
+------------------------------------
+- Use the same file structure patterns
+- Follow existing naming conventions
+- Use established TypeScript patterns
+- Maintain consistent component organization
+
+RULE #5: DATABASE INTEGRITY
+---------------------------
+- Always use Prisma for database operations
+- Follow established schema patterns
+- Use proper TypeScript types from /lib/lineage-types.ts
+- Test database operations before implementing
+
+RULE #6: ERROR HANDLING
+-----------------------
+- Always include proper error handling in API routes
+- Provide user-friendly error messages
+- Log errors for debugging
+- Handle edge cases gracefully
+
+RULE #7: RESPONSIVE DESIGN
+-------------------------
+- Ensure all new components work on mobile and desktop
+- Use Tailwind's responsive classes appropriately
+- Test on different screen sizes
+
+RULE #8: PERFORMANCE CONSIDERATIONS
+-----------------------------------
+- Use proper loading states
+- Implement efficient data fetching
+- Avoid unnecessary re-renders
+- Use proper React patterns (useEffect, useState, etc.)
+
+RULE #9: SECURITY
+-----------------
+- Validate all user inputs
+- Use proper authentication patterns when implemented
+- Sanitize data before database operations
+- Follow Next.js security best practices
+
+RULE #10: DOCUMENTATION
+-----------------------
+- Update project.txt when adding major features
+- Comment complex logic
+- Keep README.md updated
+- Document API endpoints
+
+RULE #11: TESTING APPROACH
+--------------------------
+- Test new features thoroughly before considering them complete
+- Verify existing functionality still works
+- Test both success and error scenarios
+- Check browser console for errors
+
+RULE #12: COMMUNICATION
+-----------------------
+- Always ask for clarification if requirements are unclear
+- Explain what changes will be made before implementing
+- Provide progress updates on complex features
+- Ask permission before making significant architectural changes
+
+RULE #13: FILE ORGANIZATION
+---------------------------
+- Keep related files together
+- Use consistent folder structures
+- Don't move existing files without permission
+- Follow the established app/ and components/ structure
+
+RULE #14: VERSION CONTROL
+-------------------------
+- Make focused, single-purpose commits
+- Use descriptive commit messages
+- Don't commit broken code
+- Test before committing
+
+RULE #15: USER EXPERIENCE
+-------------------------
+- Prioritize user experience in all decisions
+- Make interfaces intuitive and accessible
+- Provide clear feedback for user actions
+- Maintain consistent interaction patterns
+
+CRITICAL REMINDER: When in doubt about formatting or layout changes, ASK FIRST. It's better to ask for permission than to break existing functionality.

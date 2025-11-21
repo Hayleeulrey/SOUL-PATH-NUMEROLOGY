@@ -1,0 +1,289 @@
+SOUL PATH NUMEROLOGY - PROJECT DESCRIPTION
+=============================================
+
+OVERVIEW
+--------
+Soul Path Numerology is a faith-based web application that combines ancient numerology wisdom with biblical insights to help users discover their spiritual journey through sacred numbers. Built with Next.js 14 and modern React patterns, this application provides personalized numerology calculations with comprehensive interpretations that connect numerological meanings to biblical references, Tarot associations, and astrological alignments.
+
+TECHNICAL STACK
+---------------
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS with custom color scheme
+- UI Components: Radix UI primitives with custom styling
+- Icons: Lucide React
+- Font: Inter (Google Fonts)
+- Build Tool: Next.js built-in bundler
+- Package Manager: npm
+
+PROJECT STRUCTURE
+-----------------
+/app/
+├── layout.tsx                 # Root layout with header and metadata
+├── page.tsx                   # Homepage with calculator interface
+├── globals.css                # Global styles and CSS variables
+├── numerology/                # Core numerology functionality
+│   ├── numerology-calculator.tsx    # Main calculator component
+│   ├── numerology-definitions.ts    # Comprehensive number meanings
+│   ├── numerology-utils.ts          # Calculation algorithms
+│   └── types.ts                    # TypeScript type definitions
+└── sacred-science/
+    └── page.tsx               # Educational content about numerology
+
+/components/
+├── shared/
+│   ├── header.tsx             # Fixed navigation header
+│   └── footer.tsx             # Site footer
+├── site-navigation.tsx         # Mobile-friendly navigation menu
+└── ui/                        # Reusable UI components
+    ├── accordion.tsx           # Collapsible content sections
+    ├── alert.tsx              # Information alerts
+    ├── button.tsx             # Styled buttons
+    ├── card.tsx               # Content containers
+    ├── input.tsx              # Form inputs
+    ├── label.tsx               # Form labels
+    └── sheet.tsx               # Mobile navigation drawer
+
+CORE FEATURES
+-------------
+
+1. NUMEROLOGY CALCULATOR
+   - Interactive form for name and birthdate input
+   - Real-time calculation of four core numerology numbers:
+     * Soul Number (from vowels in name)
+     * Outer Personality Number (from consonants)
+     * Destiny Number (combination of Soul + Personality)
+     * Life Lesson Number (from birthdate)
+   - Detailed calculation explanations for transparency
+   - Support for Master Numbers (11, 22, 33)
+
+2. COMPREHENSIVE INTERPRETATIONS
+   - Faith-based interpretations connecting numerology to biblical wisdom
+   - Biblical references for each number meaning
+   - Tarot card associations (Major Arcana 1-9)
+   - Astrological planet alignments
+   - Personal number vibration definitions (double delineation)
+   - Master number special significance alerts
+
+3. EDUCATIONAL CONTENT
+   - Sacred Science page explaining numerology fundamentals
+   - Biblical significance of numbers
+   - Connections to Tarot and Astrology
+   - Master number explanations
+   - Calculation methodology details
+
+4. RESPONSIVE DESIGN
+   - Mobile-first approach with Tailwind CSS
+   - Fixed header with mobile navigation drawer
+   - Accordion-based results display for better organization
+   - Custom color scheme: sage green (#4F5D4E), terracotta (#E07A5F), light gray (#F4F4F4)
+
+CALCULATION ALGORITHMS
+----------------------
+- Letter-to-number conversion using traditional numerology mapping
+- Vowel/consonant separation for Soul/Personality calculations
+- Number reduction with Master Number preservation
+- Birthdate calculation combining month, day, and year digits
+- Comprehensive error handling and validation
+
+CONTENT DEPTH
+-------------
+The application includes extensive content covering:
+- 9 basic numbers (1-9) with detailed meanings
+- 3 Master Numbers (11, 22, 33) with special interpretations
+- 100+ Personal Number Vibration definitions (10-99)
+- Biblical references for every number interpretation
+- Tarot associations for numbers 1-9
+- Astrological planet correspondences
+- Spiritual associations and guidance
+
+DESIGN PHILOSOPHY
+-----------------
+- Faith-based approach connecting ancient wisdom to biblical truth
+- Clean, minimalist design emphasizing content
+- Accessible color scheme with good contrast
+- Intuitive user experience with clear navigation
+- Educational focus on understanding rather than just calculation
+
+TARGET AUDIENCE
+---------------
+- Individuals interested in spiritual growth and self-discovery
+- People seeking to understand their life purpose through faith-based numerology
+- Users looking for connections between numerology, biblical wisdom, and other spiritual practices
+- Anyone curious about the sacred science of numbers
+
+UNIQUE VALUE PROPOSITION
+-----------------------
+Unlike generic numerology calculators, Soul Path Numerology specifically:
+- Integrates biblical references and Christian perspective
+- Provides comprehensive educational content
+- Offers detailed calculation explanations
+- Connects numerology to Tarot and Astrology
+- Focuses on spiritual growth and divine purpose
+- Maintains a respectful, faith-based approach to ancient wisdom
+
+TECHNICAL HIGHLIGHTS
+--------------------
+- Type-safe implementation with comprehensive TypeScript definitions
+- Modular architecture with separated concerns
+- Reusable UI components built on Radix UI primitives
+- Responsive design with mobile-first approach
+- Clean, maintainable code structure
+- Comprehensive content management system for numerology definitions
+
+This application represents a thoughtful integration of ancient spiritual wisdom with modern web technology, providing users with a meaningful tool for spiritual self-discovery grounded in faith-based principles.
+
+PHASE 2: LINEAGE STORYBOARD COMPONENT
+=====================================
+
+OVERVIEW
+--------
+The next phase expands Soul Path Numerology into a comprehensive family lineage platform - essentially "Facebook for family history" with AI-powered storytelling capabilities. This component will allow users to create interactive family storyboards, record oral histories, upload photos, and use AI to transform raw materials into compelling family narratives.
+
+CORE VISION
+-----------
+Transform family history preservation from static genealogy charts into dynamic, multimedia storyboards where:
+- Family members can be added with relationships mapped
+- Audio recordings capture oral histories and memories
+- Photos and documents tell visual stories
+- AI processes raw materials into polished narratives
+- Interactive timelines show family evolution
+- Stories connect to numerology insights for deeper meaning
+
+MVP GOALS & CHECKLIST
+=====================
+
+DATABASE & DATA MODELING
+------------------------
+□ Design family member schema (name, birth/death dates, relationships, bio)
+□ Create relationship mapping system (parent/child, sibling, spouse, etc.)
+□ Design media storage schema (photos, audio files, documents)
+□ Plan story/entry schema (text, audio transcripts, AI-generated content)
+□ Set up database (PostgreSQL/SQLite for MVP)
+□ Create data seeding for prototype family tree
+
+FAMILY TREE MANAGEMENT
+----------------------
+□ Family member creation form (basic info, relationships)
+□ Visual family tree component (interactive node-based)
+□ Relationship assignment interface
+□ Family member profile pages
+□ Edit/update family member information
+□ Delete family members (with confirmation)
+□ Search and filter family members
+
+MEDIA UPLOAD & MANAGEMENT
+-------------------------
+□ Photo upload functionality (drag & drop, multiple files)
+□ Audio recording interface (browser-based recording)
+□ Audio file upload support
+□ Media gallery for each family member
+□ Image optimization and resizing
+□ Audio waveform visualization
+□ Media deletion and organization
+
+STORY CREATION & MANAGEMENT
+---------------------------
+□ Manual story entry form (text-based)
+□ Audio-to-text transcription (using Web Speech API or external service)
+□ Story categorization (childhood, career, relationships, etc.)
+□ Story timeline view
+□ Story editing and updating
+□ Story deletion with confirmation
+□ Story sharing between family members
+
+AI INTEGRATION (BACKEND)
+------------------------
+□ Audio transcription service integration (OpenAI Whisper/AssemblyAI)
+□ AI story generation from raw materials (OpenAI GPT-4)
+□ Personality analysis from photos/descriptions
+□ Automated story summarization
+□ Character trait extraction from audio/text
+□ Story enhancement and editing suggestions
+□ Batch processing for multiple family members
+
+USER INTERFACE & EXPERIENCE
+---------------------------
+□ New navigation section for "Family Lineage"
+□ Dashboard showing family overview and recent activity
+□ Family member detail pages with stories and media
+□ Interactive timeline view of family history
+□ Search functionality across all content
+□ Mobile-responsive design for family sharing
+□ Print-friendly family tree layouts
+
+INTEGRATION WITH NUMEROLOGY
+---------------------------
+□ Connect family members to their numerology profiles
+□ Show numerology insights on family member pages
+□ Generate family numerology reports
+□ Highlight significant numbers in family history
+□ Connect family stories to numerological themes
+
+TECHNICAL INFRASTRUCTURE
+------------------------
+□ Backend API development (Next.js API routes or separate service)
+□ File storage solution (local for MVP, cloud-ready for production)
+□ Database migrations and seeding
+□ Environment configuration for different stages
+□ Error handling and validation
+□ Performance optimization for media-heavy content
+
+AUTHENTICATION PREPARATION
+--------------------------
+□ User model design (ready for future auth integration)
+□ Family/group ownership system
+□ Permission system for family member access
+□ Guest access for viewing (no editing)
+□ Data privacy and security considerations
+□ GDPR compliance planning
+
+MVP SCOPE LIMITATIONS
+---------------------
+For the initial MVP, focus on:
+- Single-user experience (your family tree)
+- Local file storage (no cloud integration yet)
+- Basic AI integration (OpenAI API)
+- Simple family tree visualization
+- Core story creation and management
+- Essential media upload functionality
+
+FUTURE EXPANSION ROADMAP
+-----------------------
+Phase 3+ considerations:
+- Multi-user authentication and family sharing
+- Advanced AI features (voice cloning, photo animation)
+- Social features (comments, reactions, sharing)
+- Mobile app development
+- Advanced genealogy research integration
+- Export/import capabilities
+- Advanced privacy controls
+- Subscription model for premium AI features
+
+TECHNICAL STACK ADDITIONS
+-------------------------
+- Database: PostgreSQL or SQLite
+- File Storage: Local filesystem (MVP) → AWS S3/Cloudinary (production)
+- AI Services: OpenAI API (GPT-4, Whisper)
+- Media Processing: Sharp (images), FFmpeg (audio)
+- State Management: Zustand or Redux Toolkit
+- Charts/Visualization: D3.js or React Flow for family trees
+- Audio Recording: MediaRecorder API
+
+ESTIMATED DEVELOPMENT PHASES
+-----------------------------
+Phase 2A (MVP Core - 4-6 weeks):
+- Database setup and family member management
+- Basic media upload and story creation
+- Simple family tree visualization
+
+Phase 2B (AI Integration - 2-3 weeks):
+- Audio transcription and AI story generation
+- Enhanced story management features
+
+Phase 2C (Polish & Integration - 2-3 weeks):
+- Numerology integration
+- UI/UX improvements
+- Performance optimization
+
+This lineage component will transform Soul Path Numerology from a personal numerology tool into a comprehensive family history and spiritual discovery platform, creating a unique offering in the genealogy and spiritual wellness space.
